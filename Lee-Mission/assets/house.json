@@ -71,9 +71,38 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"objectLayer",
+         "objects":[
+                {
+                 "height":0,
+                 "id":8,
+                 "name":"life1",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"collect1",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":146.250151938738,
+                 "y":546.10429074997
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":6,
+ "nextlayerid":11,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",

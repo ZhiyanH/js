@@ -57,9 +57,68 @@
          "width":40,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":5,
+         "name":"objectLayer",
+         "objects":[
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"life1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":152.473562659536,
+                 "y":535.213321988574
+                }, 
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"life2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1001.96912604838,
+                 "y":673.684210526316
+                }, 
+                {
+                 "height":0,
+                 "id":4,
+                 "name":"life3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1170.00121550991,
+                 "y":1212.00923787529
+                }, 
+                {
+                 "height":0,
+                 "id":6,
+                 "name":"vaccine",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":107.353834933755,
+                 "y":150.917709979336
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":5,
- "nextobjectid":1,
+ "nextlayerid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
@@ -68,7 +127,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"..\/..\/Tiled-room2\/assets\/hospital32x32.png",
+         "image":"hospital32x32.png",
          "imageheight":3520,
          "imagewidth":512,
          "margin":0,
@@ -81,7 +140,7 @@
         {
          "columns":76,
          "firstgid":1761,
-         "image":"..\/..\/Tiled-room2\/assets\/roomBuilder32x32.png",
+         "image":"roomBuilder32x32.png",
          "imageheight":3488,
          "imagewidth":2432,
          "margin":0,

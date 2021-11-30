@@ -10,7 +10,7 @@ class preload extends Phaser.Scene {
   preload() {
     this.load.atlas('Faro','assets/Faro.png','assets/Faro.json');
     this.load.atlas('Virus','assets/Virus.png','assets/Virus.json');
-    
+
     this.load.atlas('zLeft','assets/zLeft.png','assets/zLeft.json');
     this.load.atlas('zRight','assets/zRight.png','assets/zRight.json');
     this.load.atlas('zUp','assets/zUp.png','assets/zUp.json');
@@ -23,21 +23,23 @@ class preload extends Phaser.Scene {
     this.load.atlas('Lee-Right','assets/Lee-Right.png','assets/Lee-Right.json');
     this.load.atlas('Lee-Up','assets/Lee-Up.png','assets/Lee-Up.json');
     this.load.atlas('Lee-Down','assets/Lee-Down.png','assets/Lee-Down.json');
-    
+
+    this.load.image("shooting", "assets/shooting.png");
+
+    this.load.image('startScene','assets/startScene.png');
+  
   }
 
   create() {
     console.log("*** preload scene");
-
-    let frame = 3
 
     this.anims.create({
       key:'FaroNPC',
       frames:[
         {key:'Faro',frame:'NPC1'},
         {key:'Faro',frame:'NPC2'},
-        {key:'Faro',frame:'NPC3'},
         {key:'Faro',frame:'NPC4'},
+        {key:'Faro',frame:'NPC3'},
       ],
       frameRate:5,
       reapet:-1
@@ -47,20 +49,21 @@ class preload extends Phaser.Scene {
       key:'Enemies',
       frames:[
         {key:'Virus',frame:'Virus1'},
-        {key:'Virus',frame:'Virus2'},
         {key:'Virus',frame:'Virus3'},
         {key:'Virus',frame:'Virus4'},
+        {key:'Virus',frame:'Virus2'},
       ],
       frameRate:5,
       reapet:-1
-    })   
-
+    }) 
+    
+    
     this.anims.create({
       key:'zombieLeft',
       frames:[
-        {key:'zLeft',frame:'zLeft1'},
-        {key:'zLeft',frame:'zLeft2'},
-        {key:'zLeft',frame:'zLeft3'},
+        {key:'zLeft',frame:'zLeft 1'},
+        {key:'zLeft',frame:'zLeft 2'},
+        {key:'zLeft',frame:'zLeft 3'},
       ],
       frameRate:5,
       reapet:-1
@@ -69,9 +72,9 @@ class preload extends Phaser.Scene {
     this.anims.create({
       key:'zombieRight',
       frames:[
-        {key:'zRight',frame:'zRight1'},
-        {key:'zRight',frame:'zRight2'},
-        {key:'zRight',frame:'zRight3'},
+        {key:'zRight',frame:'zRight 1'},
+        {key:'zRight',frame:'zRight 2'},
+        {key:'zRight',frame:'zRight 3'},
       ],
       frameRate:5,
       reapet:-1
@@ -80,9 +83,9 @@ class preload extends Phaser.Scene {
     this.anims.create({
       key:'zombieUp',
       frames:[
-        {key:'zUp',frame:'zUp1'},
-        {key:'zUp',frame:'zUp2'},
-        {key:'zUp',frame:'zUp3'},
+        {key:'zUp',frame:'zUp 1'},
+        {key:'zUp',frame:'zUp 2'},
+        {key:'zUp',frame:'zUp 3'},
       ],
       frameRate:5,
       reapet:-1
@@ -91,9 +94,9 @@ class preload extends Phaser.Scene {
     this.anims.create({
       key:'zombieDown',
       frames:[
-        {key:'zDown',frame:'zDown1'},
-        {key:'zDown',frame:'zDown2'},
-        {key:'zDown',frame:'zDown3'},
+        {key:'zDown',frame:'zDown 1'},
+        {key:'zDown',frame:'zDown 2'},
+        {key:'zDown',frame:'zDown 3'},
       ],
       frameRate:5,
       reapet:-1
@@ -171,29 +174,17 @@ class preload extends Phaser.Scene {
       reapet:-1
     })
 
-    // Check for spacebar or any key here
-    var spaceDown = this.input.keyboard.addKey("SPACE");
+    this.add.image(0, 0, 'startScene').setOrigin(0, 0).setScale(0.24);
+    console.log("This is startScene");
 
-    // On spacebar event, call the world scene
-    spaceDown.on(
-      "down",
-      function () {
-        console.log("Jump to world scene");
+    //this.input.once('pointerdown', function(){
+    var spaceDown = this.input.keyboard.addKey('SPACE');
 
-        this.scene.start(
-          "world",
-          // Optional parameters
-          {}
-        );
-      },
-      this
-    );
+    spaceDown.on('down', function(){
+    console.log("Go to s1");
+    this.scene.start("s1");
+    }, this );
 
-    // Add any text in the main page
-    this.add.text(90, 600, "Press spacebar to continue", {
-      font: "30px Courier",
-      fill: "#FFFFFF",
-    });
 
     // Create all the game animations here
   }

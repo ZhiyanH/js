@@ -49,7 +49,7 @@ class room1 extends Phaser.Scene {
           this.playerPos.x,
           this.playerPos.y,
           this.playerPos.dir
-        ).setScale(1.5);
+        ).setScale(1.5).setSize(20,32);
     
         //enable debug
         window.player = this.player;
@@ -66,8 +66,13 @@ class room1 extends Phaser.Scene {
     
         this.physics.add.collider(this.player, this.itemLayer);
         this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.player, this.furnitureLayer)
+        this.physics.add.collider(this.player, this.furnitureLayer);
 
+        this.heart = this.physics.add.sprite(146, 546, 'Heart').play('Life');
+        
+        this.physics.add.overlap(this.player, this.heart, this.collectHeart, null, this );
+
+        this.npc = this.physics.add.sprite(440,120,"Faro").play("FaroNPC").setScale(1.5);
     
     }
 
@@ -114,6 +119,13 @@ class room1 extends Phaser.Scene {
         this.scene.start("world",{playerPos: playerPos});
     }
 
-    
+    collectHeart(player, sprite){
+      console.log("Heart collected");
+
+      sprite.disableBody (true, true);
+      
+      return false;
+      }
+
 
 }

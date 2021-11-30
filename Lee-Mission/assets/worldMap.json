@@ -85,9 +85,56 @@
          "width":40,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"objectLayer",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"start",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":52.8989911267777,
+                 "y":275.385924395284
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"life1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":108.909687613954,
+                 "y":1006.63668408898
+                }, 
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"life2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1068.87079129695,
+                 "y":714.136380211499
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":1,
+ "nextlayerid":11,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
