@@ -207,7 +207,7 @@ class room2 extends Phaser.Scene {
   
   virusHurt() {
     console.log("Virus hurt you");
-    this.scene.start("preload");
+    this.scene.start("gameOver");
   }
 
   moveDownUp() {
