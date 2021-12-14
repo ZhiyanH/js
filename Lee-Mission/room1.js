@@ -74,7 +74,7 @@ class room1 extends Phaser.Scene {
         .setScrollFactor(0)
         .setVisible(false);
 
-      if (window.heart == 3) {
+      if (window.heart >= 3) {
         this.life1.setVisible(true);
         this.life2.setVisible(true);
         this.life3.setVisible(true);
@@ -159,6 +159,10 @@ class room1 extends Phaser.Scene {
       
       // deduct live
       window.heart++;
+      console.log("life: ", window.heart);
+      if (window.heart > 3){
+          window.heart = 3;
+      }
   
       if (window.heart == 3) {
         this.life3.setVisible(true);
