@@ -18,13 +18,17 @@ create () {
     console.log("This is S3");
 
     var spaceDown = this.input.keyboard.addKey('SPACE');
+    var enterDown = this.input.keyboard.addKey('enter');
     
-
     spaceDown.on('down', function(){
     this.scene.stop("s3");
     this.scene.start("s4");
     }, this );
     
+    enterDown.on('down', function(){
+    console.log("skip tutorial");
+    this.scene.start("mission1");
+    }, this );    
     
 
 }

@@ -16,10 +16,15 @@ class world extends Phaser.Scene {
 
     // Step 2 : Preload any images here, nickname, filename
     this.load.image("city", "assets/city32x32.png");
-  }
+
+  }/////////////////// end of preload //////////////////////////////
 
   create() {
     console.log("*** world scene");
+    console.log("life: ", window.heart);
+
+    this.healSnd = this.sound.add("heart");
+    this.playerHurtSnd = this.sound.add("hurt");
 
     //Step 3 - Create the map from main
     let map = this.make.tilemap({key:'world'});
@@ -40,7 +45,6 @@ class world extends Phaser.Scene {
     this.physics.world.bounds.width = this.groundLayer.width;
     this.physics.world.bounds.height = this.groundLayer.height;
 
-    // this.player = this.physics.add.sprite(55,295,"Lee-Down").setSize(20,32);
     this.player = this.physics.add.sprite(
       this.playerPos.x,
       this.playerPos.y,
@@ -52,6 +56,37 @@ class world extends Phaser.Scene {
 
     this.player.setCollideWorldBounds(true); // don't go out of the this.map
 
+    //hearts
+    this.life1 = this.add
+      .image(50, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+    this.life2 = this.add
+      .image(100, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+    this.life3 = this.add
+      .image(150, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+
+    if (window.heart == 3) {
+      this.life1.setVisible(true);
+      this.life2.setVisible(true);
+      this.life3.setVisible(true);
+    } 
+     else if (window.heart == 2) {
+      this.life1.setVisible(true);
+      this.life2.setVisible(true);
+    } 
+     else if (window.heart == 1) {
+      this.life1.setVisible(true);
+    } 
+
+    //tween
     this.time.addEvent({
       delay: 1000,
       callback: this.moveDownUp,
@@ -93,6 +128,7 @@ class world extends Phaser.Scene {
       callbackScope: this,
       loop: false,
     });
+    ///////end of tween/////
 
     this.virus1 = this.physics.add.sprite(411,240,"Virus").play("Enemies");
     this.virus2 = this.physics.add.sprite(975,304,"Virus").play("Enemies");
@@ -116,21 +152,18 @@ class world extends Phaser.Scene {
     this.physics.add.collider(this.player, this.buildingLayer);
     this.physics.add.collider(this.player, this.itemLayer);
     this.physics.add.collider(this.player, this.carLayer);
+
+    this.heart1 = this.physics.add.sprite(108, 1006, 'Heart').play('Heal');
+    this.heart2 = this.physics.add.sprite(1068, 714, 'Heart').play('Heal');
+       
+    this.entry1 = this.add.sprite(207, 656, 'Entry');
+    this.entry2 = this.add.sprite(961, 1072, 'Entry');
     
-    this.physics.add.overlap(this.player, this.virus1, this.virusHurt, null, this);
-    this.physics.add.overlap(this.player, this.virus2, this.virusHurt, null, this);
-    this.physics.add.overlap(this.player, this.virus3, this.virusHurt, null, this);
-    this.physics.add.overlap(this.player, this.virus4, this.virusHurt, null, this);
-    this.physics.add.overlap(this.player, this.virus5, this.virusHurt, null, this);
-    this.physics.add.overlap(this.player, this.virus6, this.virusHurt, null, this);
+    this.physics.add.overlap(this.player, [this.virus1, this.virus2, this.virus3, this.virus4, this.virus5, this.virus6], this.minusHealth, null, this);
 
-    this.heart1 = this.physics.add.sprite(108, 1006, 'Heart').play('Life');
-    this.heart2 = this.physics.add.sprite(1068, 714, 'Heart').play('Life');
-
-    this.physics.add.overlap(this.player, this.heart1, this.collectHeart, null, this );
-    this.physics.add.overlap(this.player, this.heart2, this.collectHeart, null, this );   
-
-  } /////////////////// end of create //////////////////////////////
+    this.physics.add.overlap(this.player, [this.heart1,this.heart2], this.collectHeart, null, this );
+ 
+  }/////////////////// end of create //////////////////////////////
 
   update() {
 
@@ -171,11 +204,56 @@ class world extends Phaser.Scene {
       this.player.anims.stop();
       this.player.body.setVelocity(0, 0);
     }
-  } /////////////////// end of update //////////////////////////////
+  }/////////////////// end of update //////////////////////////////
 
-  virusHurt() {
-    console.log("Virus hurt you");
-    this.scene.start("gameOver");
+  minusHealth(player, virus) {
+    console.log("minus life");
+
+    // deduct live
+    window.heart--;
+
+    // sound
+    this.playerHurtSnd.play();
+
+    // shake screen
+    this.cameras.main.shake(300);
+
+    // remove the virus
+    virus.disableBody(true, true);
+
+    if (window.heart == 2) {
+      this.life3.setVisible(false);
+    } 
+     else if (window.heart == 1) {
+      this.life2.setVisible(false);
+    } 
+     else if (window.heart == 0) {
+      this.life1.setVisible(false);
+      console.log("GAME OVER");
+      this.scene.stop('world');
+      this.scene.start("gameOver");
+    }
+  }
+
+  collectHeart(player, sprite){
+    console.log("heart collected");
+
+    this.healSnd.play();
+
+    sprite.disableBody (true, true);
+    
+    // deduct live
+    window.heart++;
+
+    if (window.heart == 3) {
+      this.life3.setVisible(true);
+    } 
+     else if (window.heart == 2) {
+      this.life2.setVisible(true);
+    } 
+     else if (window.heart == 1) {
+      this.life1.setVisible(true);
+    }
   }
 
   moveDownUp() {
@@ -312,19 +390,8 @@ class world extends Phaser.Scene {
       // Function to jump to room3
   room3(player, tile) {
     console.log("room3 function");
-    let playerPos = {};
-    playerPos.x = 285
-    playerPos.y = 1215
-    playerPos.dir = "Lee-Up"    
 
-    this.scene.start("room3",{playerPos: playerPos});
+    this.scene.start("mission3");
   }
 
-  collectHeart(player, sprite){
-    console.log("Heart collected");
-
-    sprite.disableBody (true, true);
-    
-    return false;
-    }
 } //////////// end of class world ////////////////////////

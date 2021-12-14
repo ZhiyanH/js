@@ -1,0 +1,40 @@
+{
+  "frames": [
+    {
+      "filename": "Life",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 25,
+        "h": 23
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 3,
+        "w": 25,
+        "h": 23
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "Life.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 25,
+      "h": 23
+    },
+    "scale": 1
+  }
+}

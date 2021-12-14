@@ -20,10 +20,13 @@ class room1 extends Phaser.Scene {
         this.load.image("livingRoom", "assets/livingRoom32x32.png");
         this.load.image("roomBuilder", "assets/roomBuilder32x32.png");
 
-    }
+    }/////////////////// end of preload //////////////////////////////
 
     create() {
         console.log('*** room1 scene');
+        console.log("life: ", window.heart);
+
+        this.healSnd = this.sound.add("heart");
 
         let map = this.make.tilemap({key:'room1'});
 
@@ -43,8 +46,6 @@ class room1 extends Phaser.Scene {
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
     
-        // this.player = this.physics.add.sprite(415,610,"Lee-Down").setScale(1.5);
-
         this.player = this.physics.add.sprite(
           this.playerPos.x,
           this.playerPos.y,
@@ -55,6 +56,36 @@ class room1 extends Phaser.Scene {
         window.player = this.player;
     
         this.player.setCollideWorldBounds(true); // don't go out of the this.map
+
+        //hearts
+        this.life1 = this.add
+        .image(50, 40, "Life")
+        .setScale(1.5)
+        .setScrollFactor(0)
+        .setVisible(false);
+        this.life2 = this.add
+        .image(100, 40, "Life")
+        .setScale(1.5)
+        .setScrollFactor(0)
+        .setVisible(false);
+        this.life3 = this.add
+        .image(150, 40, "Life")
+        .setScale(1.5)
+        .setScrollFactor(0)
+        .setVisible(false);
+
+      if (window.heart == 3) {
+        this.life1.setVisible(true);
+        this.life2.setVisible(true);
+        this.life3.setVisible(true);
+      } 
+       else if (window.heart == 2) {
+        this.life1.setVisible(true);
+        this.life2.setVisible(true);
+      } 
+       else if (window.heart == 1) {
+        this.life1.setVisible(true);
+      } 
        
         this.cursors = this.input.keyboard.createCursorKeys();
       
@@ -68,18 +99,18 @@ class room1 extends Phaser.Scene {
         this.physics.add.collider(this.player, this.wallLayer);
         this.physics.add.collider(this.player, this.furnitureLayer);
 
-        this.heart = this.physics.add.sprite(146, 546, 'Heart').play('Life');
+        this.heart = this.physics.add.sprite(146, 546, 'Heart').play('Heal');
         
         this.physics.add.overlap(this.player, this.heart, this.collectHeart, null, this );
 
-        this.npc = this.physics.add.sprite(440,120,"Faro").play("FaroNPC").setScale(1.5);
+        this.npc = this.add.sprite(440,120,"Faro").play("FaroNPC").setScale(1.5);
     
-    }
+    }/////////////////// end of create //////////////////////////////
 
     update() {
         
-     //check room1 (out)
-     if (this.player.x > 408 && this.player.x < 456
+        //check room1 (out)
+        if (this.player.x > 408 && this.player.x < 456
         && this.player.y > 615) {
 
           this.world();
@@ -106,7 +137,7 @@ class room1 extends Phaser.Scene {
             this.player.anims.stop();
             this.player.body.setVelocity(0, 0);
           }
-    }
+    }/////////////////// end of update //////////////////////////////
 
     //Function jump to room1
     world(player,tile) {
@@ -120,12 +151,24 @@ class room1 extends Phaser.Scene {
     }
 
     collectHeart(player, sprite){
-      console.log("Heart collected");
+      console.log("heart collected");
 
+      this.healSnd.play();
+  
       sprite.disableBody (true, true);
       
-      return false;
+      // deduct live
+      window.heart++;
+  
+      if (window.heart == 3) {
+        this.life3.setVisible(true);
+      } 
+       else if (window.heart == 2) {
+        this.life2.setVisible(true);
+      } 
+       else if (window.heart == 1) {
+        this.life1.setVisible(true);
       }
+    }
 
-
-}
+}//////////// end of room1 ////////////////////////

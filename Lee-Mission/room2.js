@@ -18,10 +18,15 @@ class room2 extends Phaser.Scene {
       this.load.image("hospital", "assets/hospital32x32.png");
       this.load.image("roomBuilder", "assets/roomBuilder32x32.png");
 
-  }
+  }/////////////////// end of preload //////////////////////////////
 
   create() {
       console.log('*** room2 scene');
+      console.log("life: ", window.heart);
+
+      this.healSnd = this.sound.add("heart");
+      this.collectSnd = this.sound.add("vaccine");
+      this.playerHurtSnd = this.sound.add("hurt");
 
       let map = this.make.tilemap({key:'room2'});
 
@@ -37,8 +42,6 @@ class room2 extends Phaser.Scene {
 
       this.physics.world.bounds.width = this.groundLayer.width;
       this.physics.world.bounds.height = this.groundLayer.height;
-  
-      // this.player = this.physics.add.sprite(640,1225,"Lee-Down").setScale(1.5);
 
       this.player = this.physics.add.sprite(
         this.playerPos.x,
@@ -51,7 +54,36 @@ class room2 extends Phaser.Scene {
   
       this.player.setCollideWorldBounds(true); // don't go out of the this.map
 
-      
+      //hearts
+      this.life1 = this.add
+      .image(50, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+      this.life2 = this.add
+      .image(100, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+      this.life3 = this.add
+      .image(150, 40, "Life")
+      .setScale(1.5)
+      .setScrollFactor(0)
+      .setVisible(false);
+
+      if (window.heart == 3) {
+        this.life1.setVisible(true);
+        this.life2.setVisible(true);
+        this.life3.setVisible(true);
+      } 
+       else if (window.heart == 2) {
+        this.life1.setVisible(true);
+        this.life2.setVisible(true);
+      } 
+       else if (window.heart == 1) {
+        this.life1.setVisible(true);
+      } 
+
       this.time.addEvent({
         delay: 1000,
         callback: this.moveDownUp,
@@ -137,35 +169,25 @@ class room2 extends Phaser.Scene {
       this.physics.add.collider(this.player, this.wallLayer);
       this.physics.add.collider(this.player, this.furnitureLayer)
 
-      this.physics.add.overlap(this.player, this.virus1, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus2, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus3, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus4, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus5, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus6, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus7, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus8, this.virusHurt, null, this);
-      this.physics.add.overlap(this.player, this.virus9, this.virusHurt, null, this);
-
-      this.heart1 = this.physics.add.sprite(152, 535, 'Heart').play('Life');
-      this.heart2 = this.physics.add.sprite(1002, 673, 'Heart').play('Life');
-      this.heart3 = this.physics.add.sprite(1170, 1212, 'Heart').play('Life');
-        
-      this.physics.add.overlap(this.player, this.heart1, this.collectHeart, null, this );
-      this.physics.add.overlap(this.player, this.heart2, this.collectHeart, null, this );
-      this.physics.add.overlap(this.player, this.heart3, this.collectHeart, null, this );
+      this.heart1 = this.physics.add.sprite(152, 535, 'Heart').play('Heal');
+      this.heart2 = this.physics.add.sprite(1002, 673, 'Heart').play('Heal');
+      this.heart3 = this.physics.add.sprite(1170, 1212, 'Heart').play('Heal');
 
       this.vaccine = this.physics.add.sprite(107, 150, 'Vaccine').play('Cure');
         
+      this.physics.add.overlap(this.player, [this.heart1,this.heart2,this.heart3], this.collectHeart, null, this );
+
+      this.physics.add.overlap(this.player, [this.virus1, this.virus2, this.virus3, this.virus4, this.virus5, this.virus6, this.virus7, this.virus8, this.virus9], this.minusHealth, null, this);
+  
       this.physics.add.overlap(this.player, this.vaccine, this.collectVaccine, null, this );
   
-  }
+  }/////////////////// end of create //////////////////////////////
 
   update() {
       
-   //check room2 (out)
-   if (this.player.x > 600 && this.player.x < 680
-      && this.player.y > 1239) {
+      //check room2 (out)
+      if (this.player.x > 600 && this.player.x < 680
+         && this.player.y > 1239) {
 
         this.world();
       }       
@@ -191,24 +213,65 @@ class room2 extends Phaser.Scene {
           this.player.anims.stop();
           this.player.body.setVelocity(0, 0);
         }
-  }
+  }/////////////////// end of update //////////////////////////////
 
   //Function jump to room2
   world(player,tile) {
     console.log("world function");
-    let playerPos = {};
-    playerPos.x = 211
-    playerPos.y = 777
-    playerPos.dir = "Lee-Down";
-
-    this.scene.start("world",{playerPos: playerPos});
-  }
-
   
-  virusHurt() {
-    console.log("Virus hurt you");
-    this.scene.start("gameOver");
+    this.scene.start("mission2");
   }
+
+  minusHealth(player, virus) {
+    console.log("minus life");
+
+    // deduct live
+    window.heart--;
+
+    // sound
+    this.playerHurtSnd.play();
+
+    // shake screen
+    this.cameras.main.shake(300);    
+
+    // remove the virus
+    virus.disableBody(true, true);
+
+    if (window.heart == 2) {
+      this.life3.setVisible(false);
+    } 
+     else if (window.heart == 1) {
+      this.life2.setVisible(false);
+    } 
+     else if (window.heart == 0) {
+      this.life1.setVisible(false);
+      console.log("GAME OVER");
+      this.scene.stop('room2');
+      this.scene.start("gameOver2");
+    }
+   }
+
+  collectHeart(player, sprite){
+    console.log("heart collected");
+
+    this.healSnd.play();
+
+    sprite.disableBody (true, true);
+    
+    // deduct live
+    window.heart++;
+
+    if (window.heart == 3) {
+      this.life3.setVisible(true);
+    } 
+     else if (window.heart == 2) {
+      this.life2.setVisible(true);
+    } 
+     else if (window.heart == 1) {
+      this.life1.setVisible(true);
+    }
+  }
+
 
   moveDownUp() {
     console.log("enemies moveDownUp 1");
@@ -373,20 +436,15 @@ class room2 extends Phaser.Scene {
     });
   }
 
-  collectHeart(player, sprite){
-    console.log("Heart collected");
 
+  collectVaccine(player, sprite){
+    console.log("Vaccine collected");
+      
+    this.collectSnd.play();
+      
     sprite.disableBody (true, true);
-    
+      
     return false;
     }
 
-    collectVaccine(player, sprite){
-      console.log("Vaccine collected");
-
-      sprite.disableBody (true, true);
-      
-      return false;
-      }
-
-}
+}//////////// end of room2 ////////////////////////

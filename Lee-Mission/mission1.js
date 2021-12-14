@@ -7,12 +7,10 @@ class mission1 extends Phaser.Scene {
 
   preload() {
     this.load.image('mission1', 'assets/mission1.png')
-
     
 }
 
 create () {
-
     this.S1 = this.add.image(0, 0, 'mission1').setOrigin(0, 0).setScale(0.24);
    
     console.log("This is mission1");
@@ -34,9 +32,6 @@ create () {
     );
     
   
-
 }
 
-
-  
 }
